@@ -1,0 +1,4 @@
+# requirements.txt
+python-telegram-bot[job-queue]==20.8
+python-dotenv==1.0.0
+APScheduler>=3.6.3
