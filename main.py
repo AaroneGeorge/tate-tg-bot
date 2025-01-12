@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 from telegram import Update
 import asyncio
+import random
 
 # Load environment variables
 load_dotenv()
@@ -11,13 +12,38 @@ load_dotenv()
 # Store channel IDs where the bot should send repeated messages
 active_channels = set()
 
+# List of quotes with emojis
+QUOTES = [
+    "💭 Success comes to those who embrace discomfort and push through.",
+    "⚡ The most important part of any plan is taking action.",
+    "🌟 Your mind must be stronger than your emotions.",
+    "🎯 Arrogance breeds complacency, and complacency breeds failure.",
+    "💪 Discipline is doing what you hate to do but doing it like you love it."
+]
+
+# List of image URLs (using placeholder images for demonstration)
+IMAGES = [
+    "https://us-tuna-sounds-images.voicemod.net/c5af4866-4419-430a-8cc7-5b13c769efcb-1664233443548.jpg",  # Replace with your actual image URLs
+    "https://us-tuna-sounds-images.voicemod.net/86744f05-b1bb-446e-b9e3-7073e091a0eb-1692997370694.jpg",
+    "https://static.wikia.nocookie.net/memeverse-scaling/images/f/fb/Andrew_Tate.jpeg/revision/latest?cb=20221126210254"
+]
+
 async def send_periodic_message(context: ContextTypes.DEFAULT_TYPE):
-    """Send periodic message to all active channels."""
+    """Send periodic message to all active channels with random content."""
     for channel_id in active_channels:
         try:
-            await context.bot.send_message(
+            # Get a random quote and image
+            quote = random.choice(QUOTES)
+            image_url = random.choice(IMAGES)
+            
+            # Combine them in a single message with additional emojis
+            message = f"✨ Daily Inspiration ✨\n\n{quote}\n\n🌈 Keep shining! 🌈"
+            
+            # Send photo with caption
+            await context.bot.send_photo(
                 chat_id=channel_id,
-                text='Hello World!'
+                photo=image_url,
+                caption=message
             )
         except Exception as e:
             print(f"Error sending to channel {channel_id}: {e}")
@@ -36,14 +62,14 @@ async def handle_channel_command(update: Update, context: ContextTypes.DEFAULT_T
                     active_channels.add(chat_id)
                     await context.bot.send_message(
                         chat_id=chat_id,
-                        text='Starting periodic messages every 5 seconds!'
+                        text='Starting periodic messages every 5 seconds with random quotes and images! 🚀'
                     )
             elif text.startswith('/stop'):
                 if chat_id in active_channels:
                     active_channels.remove(chat_id)
                     await context.bot.send_message(
                         chat_id=chat_id,
-                        text='Stopped periodic messages!'
+                        text='Stopped periodic messages! 👋'
                     )
     except Exception as e:
         print(f"Error in handle_channel_command: {e}")
@@ -51,14 +77,13 @@ async def handle_channel_command(update: Update, context: ContextTypes.DEFAULT_T
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle start command in private chats and groups"""
     try:
-        # Only handle private chats and groups here
         if update.message and update.message.chat.type in ['private', 'group', 'supergroup']:
             chat_id = update.message.chat.id
             if chat_id not in active_channels:
                 active_channels.add(chat_id)
                 await context.bot.send_message(
                     chat_id=chat_id,
-                    text='Starting periodic messages every 5 seconds!'
+                    text='Starting periodic messages every 5 seconds with random quotes and images! 🚀'
                 )
     except Exception as e:
         print(f"Error in start command: {e}")
@@ -66,14 +91,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle stop command in private chats and groups"""
     try:
-        # Only handle private chats and groups here
         if update.message and update.message.chat.type in ['private', 'group', 'supergroup']:
             chat_id = update.message.chat.id
             if chat_id in active_channels:
                 active_channels.remove(chat_id)
                 await context.bot.send_message(
                     chat_id=chat_id,
-                    text='Stopped periodic messages!'
+                    text='Stopped periodic messages! 👋'
                 )
     except Exception as e:
         print(f"Error in stop command: {e}")
@@ -88,7 +112,7 @@ async def my_chat_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
             active_channels.add(chat_id)
             await context.bot.send_message(
                 chat_id=chat_id,
-                text='Hello! I was just added. I will start sending messages every 5 seconds!'
+                text='Hello! I was just added. I will start sending random quotes and images every 5 seconds! 🎉'
             )
         elif update.my_chat_member.new_chat_member.status == 'left':
             if chat_id in active_channels:
