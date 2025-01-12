@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 from telegram import Update
-import asyncio
 import random
 
 # Load environment variables
