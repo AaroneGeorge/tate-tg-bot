@@ -95,7 +95,7 @@ async def handle_channel_command(update: Update, context: ContextTypes.DEFAULT_T
                     active_channels.add(chat_id)
                     await context.bot.send_message(
                         chat_id=chat_id,
-                        text='Starting periodic messages every 5 seconds with random quotes and images! 🚀'
+                        text='Starting periodic messages every 6 minutes with random quotes and images! 🚀'
                     )
             elif text.startswith('/stop'):
                 if chat_id in active_channels:
@@ -116,7 +116,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 active_channels.add(chat_id)
                 await context.bot.send_message(
                     chat_id=chat_id,
-                    text='Starting periodic messages every 5 seconds with random quotes and images! 🚀'
+                    text='Starting periodic messages every 6 minutes with random quotes and images! 🚀'
                 )
     except Exception as e:
         print(f"Error in start command: {e}")
@@ -167,7 +167,7 @@ def main():
         
         # Schedule the periodic message task
         if job_queue:
-            job_queue.run_repeating(send_periodic_message, interval=5, first=1)
+            job_queue.run_repeating(send_periodic_message, interval=360, first=1)
         else:
             print("Error: Job queue is not available!")
             return
