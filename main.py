@@ -90,14 +90,14 @@ async def handle_channel_command(update: Update, context: ContextTypes.DEFAULT_T
             
             print(f"Received channel post: {text} in {chat_id}")  # Debug print
             
-            if text.startswith('/start'):
+            if text.startswith('/starttate'):
                 if chat_id not in active_channels:
                     active_channels.add(chat_id)
                     await context.bot.send_message(
                         chat_id=chat_id,
                         text='Starting periodic messages every 6 minutes with random quotes and images! 🚀'
                     )
-            elif text.startswith('/stop'):
+            elif text.startswith('/stoptate'):
                 if chat_id in active_channels:
                     active_channels.remove(chat_id)
                     await context.bot.send_message(
@@ -173,8 +173,8 @@ def main():
             return
         
         # Add command handlers for private chats and groups
-        application.add_handler(CommandHandler("start", start))
-        application.add_handler(CommandHandler("stop", stop))
+        application.add_handler(CommandHandler("starttate", start))
+        application.add_handler(CommandHandler("stoptate", stop))
         
         # Add channel post handler
         application.add_handler(MessageHandler(filters.ChatType.CHANNEL, handle_channel_command))
