@@ -17,31 +17,65 @@ QUOTES = [
     "⚡ The most important part of any plan is taking action.",
     "🌟 Your mind must be stronger than your emotions.",
     "🎯 Arrogance breeds complacency, and complacency breeds failure.",
-    "💪 Discipline is doing what you hate to do but doing it like you love it."
+    "💪 Discipline is doing what you hate to do but doing it like you love it.",
+    "🚀 The universe rewards consistent effort, not fleeting passion.",
+    "🧠 A focused mind is a powerful weapon.",
+    "🔥 Fear is fuel; channel it into power.",
+    "💼 Every setback is a setup for a stronger comeback.",
+    "🎢 Life's highs and lows build resilience—embrace both.",
+    "🥇 Winners don’t wait for opportunities; they create them.",
+    "🕰️ Time is your most precious resource; use it wisely.",
+    "🛡️ Protect your energy and prioritize your mission.",
+    "🌍 You can't change the world if you can't change yourself.",
+    "💡 Great ideas are worthless without execution.",
+    "🏋️ Strength isn't just physical; it's mental and emotional, too.",
+    "🔗 The right connections can multiply your impact exponentially.",
+    "📈 Progress requires sacrifice—embrace the grind.",
+    "💬 Your words should carry the weight of your actions.",
+    "🌱 Growth begins where comfort ends.",
 ]
 
 # List of image URLs (using placeholder images for demonstration)
 IMAGES = [
-    "https://us-tuna-sounds-images.voicemod.net/c5af4866-4419-430a-8cc7-5b13c769efcb-1664233443548.jpg",  # Replace with your actual image URLs
-    "https://us-tuna-sounds-images.voicemod.net/86744f05-b1bb-446e-b9e3-7073e091a0eb-1692997370694.jpg",
-    "https://static.wikia.nocookie.net/memeverse-scaling/images/f/fb/Andrew_Tate.jpeg/revision/latest?cb=20221126210254"
+    "./assets/Screenshot_164.png",
+    "./assets/Screenshot_165.png",
+    "./assets/Screenshot_166.png",
+    "./assets/Screenshot_167.png",
+    "./assets/Screenshot_168.png",
+    "./assets/Screenshot_169.png",
+    "./assets/Screenshot_170.png",
 ]
+
+# Add these new variables after active_channels definition
+available_quotes = []
+available_images = []
 
 async def send_periodic_message(context: ContextTypes.DEFAULT_TYPE):
     """Send periodic message to all active channels with random content."""
+    global available_quotes, available_images
+    
+    # Refill the available items if empty
+    if not available_quotes:
+        available_quotes = QUOTES.copy()
+    if not available_images:
+        available_images = IMAGES.copy()
+    
     for channel_id in active_channels:
         try:
-            # Get a random quote and image
-            quote = random.choice(QUOTES)
-            image_url = random.choice(IMAGES)
+            # Get a random quote and image, then remove them from available lists
+            quote = random.choice(available_quotes)
+            image_path = random.choice(available_images)
+            
+            available_quotes.remove(quote)
+            available_images.remove(image_path)
             
             # Combine them in a single message with additional emojis
-            message = f"✨ Daily Inspiration ✨\n\n{quote}\n\n🌈 Keep shining! 🌈"
+            message = f"✨ Message from the Top G 📣\n\n{quote}\n\n💪 Join the Movement: www.pump.fun 💊💊"
             
             # Send photo with caption
             await context.bot.send_photo(
                 chat_id=channel_id,
-                photo=image_url,
+                photo=image_path,
                 caption=message
             )
         except Exception as e:
