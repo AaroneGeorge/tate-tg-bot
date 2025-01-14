@@ -70,7 +70,7 @@ async def send_periodic_message(context: ContextTypes.DEFAULT_TYPE):
             available_images.remove(image_path)
             
             # Combine them in a single message with additional emojis
-            message = f"✨ Message from the Top G 📣\n\n{quote}\n\n💪 Join the Movement: www.pump.fun 💊💊"
+            message = f"✨ Message from the Top G 📣\n\n{quote}\n\n💪 Join the Movement: https://pump.fun/coin/HGZoq6MENUMt3SxsDiTgZD11ZcHucpsmaXsLoN74pump 💊💊"
             
             # Send photo with caption
             await context.bot.send_photo(
